@@ -1,0 +1,16 @@
+.card{
+    background-color:rgb(211, 211, 211);
+    width: 150px;
+    height: 200px;
+    margin-left: 150px;
+    font-size: large;
+    text-align: center;
+    
+}
+
+.button {
+    background-color: royalblue;
+    color: whitesmoke;
+    align-self:end;
+    
+}
