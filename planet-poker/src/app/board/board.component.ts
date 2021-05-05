@@ -10,7 +10,7 @@ export class BoardComponent {
 
   tshirtArray = ['S', 'M', 'L', 'XL', 'XXL'];
   // arraystandard = [999, 1, 2, 3, 5, 8, 13, 20, 40, 100];
-  arraystandard = ['1', '23'];
+  arraystandard = ['1',  '2', '3', '5', '8', '13', '20', '40', '100'];
 
   onToggle(value: string){
     this.gameMode = value;
