@@ -1,1 +1,31 @@
 <h2>Room placeholder</h2>
+
+<mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+  <mat-button-toggle value="standard" (click)="onToggle('standard')">Standard</mat-button-toggle>
+  <mat-button-toggle value="tshirt" (click)="onToggle('tshirt')">T-Shirt</mat-button-toggle>
+</mat-button-toggle-group>
+<br>
+<br>
+<br>
+
+
+
+<div class="row">
+  <div class="column" *ngFor="let card of getGameMode()">
+
+    <mat-card class="card"  >
+
+      <mat-card-title >
+        {{card}}
+      </mat-card-title>
+
+      <!-- TODO: Align the dumb button nicely! -->
+      <mat-card-actions >
+        <button mat-raised-button class="button " >Submit!</button>
+      </mat-card-actions>
+
+
+    </mat-card>
+
+  </div>
+</div>

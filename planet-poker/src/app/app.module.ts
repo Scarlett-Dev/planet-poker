@@ -10,6 +10,9 @@ import { MatCardModule } from '@angular/material/card';
 
 import { BoardComponent } from './board/board.component';
 import { CardComponent } from './card/card.component';
+import {MatExpansionPanel} from "@angular/material/expansion";
+import {MatNavList} from "@angular/material/list";
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
 
 
 @NgModule({
@@ -24,7 +27,9 @@ import { CardComponent } from './card/card.component';
     BrowserAnimationsModule,
     MatToolbarModule,
     MatCardModule,
-    MatButtonModule
+    MatButtonModule,
+    MatButtonToggleModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]
