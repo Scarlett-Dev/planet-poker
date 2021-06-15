@@ -13,6 +13,7 @@ import { CardComponent } from './card/card.component';
 import {MatExpansionPanel} from "@angular/material/expansion";
 import {MatNavList} from "@angular/material/list";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
+import { ObserverComponent } from './observer/observer.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
     AppComponent,
     HeaderComponent,
     BoardComponent,
-    CardComponent
+    CardComponent,
+    ObserverComponent
   ],
   imports: [
     BrowserModule,

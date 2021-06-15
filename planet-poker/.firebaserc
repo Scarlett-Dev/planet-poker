@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "plan-it-poker": {
+      "hosting": {
+        "planet-poker": [
+          "plan-it-poker"
+        ]
+      }
+    }
+  }
+}
