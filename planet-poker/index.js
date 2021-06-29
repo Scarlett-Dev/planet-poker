@@ -31,7 +31,14 @@ app.get('/', cors(corsOptions), (req, res) => {
 
 io.on('connection', (socket) => {
   console.log('a user connected');
+  console.log('Socket: ', socket);
 });
+
+
+io.on('potato', (socket) => {
+  console.log('This is the potato in Index.js.')
+});
+
 
 server.listen(3000, () => {
   console.log('listening on *:3000');

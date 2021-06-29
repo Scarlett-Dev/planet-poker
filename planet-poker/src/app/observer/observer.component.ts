@@ -24,12 +24,15 @@ private messageText = "";
        ngOnInit() {
         this.messages = new Array();
         console.log('STARTED:', this.messages);
+        console.dir('Pingu says:', this.messages);
 
         //Todo: Figure out how to emit an event (Broadcast?)
         this.socket.emit('potato', () => {
             this.messages.push('Start_Potato')
             console.log('Emit The Potato!');
         });
+
+        console.log('Should emit potato, reading event now', this.messages);
 
         //TODO: Figure our how to react to an event (Listener?)
         this.socket.on('potato', () => {
