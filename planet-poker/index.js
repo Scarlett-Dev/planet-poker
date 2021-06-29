@@ -6,6 +6,22 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
+messagesMap = new Map();
+
+var jsonCollection = {
+  user: [
+    {
+    username: "StandardOne",
+    points: "1"
+    },
+    {
+      username: "StandardTwo",
+      points: "2"
+      }
+  ]
+
+}
+
 var corsOptions = {
   origin: 'http://localhost/',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
@@ -31,12 +47,23 @@ app.get('/', cors(corsOptions), (req, res) => {
 
 io.on('connection', (socket) => {
   console.log('a user connected');
-  console.log('Socket: ', socket);
-});
+
+  socket.on('potato', function(messageText) {
+    console.log('The Collection of the passed stuff:', messageText)
+    console.log('The username: ', messageText.user);
+    console.log('The selected points: ', messageText.points);
+
+    messagesMap.set(messageText.user, messageText.points);
+
+    console.log('Sending the following values to Angular: ', jsonCollection);
+
+    socket.emit('mp', jsonCollection);
+    console.log('Emitted the event "mashed potato" with the following values: ', jsonCollection)
 
 
-io.on('potato', (socket) => {
-  console.log('This is the potato in Index.js.')
+    // console.log('show all the events', socket.adapter.rooms)
+  });
+
 });
 
 

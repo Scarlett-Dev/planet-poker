@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import {io, Socket} from 'socket.io-client';
 
 @Component({
@@ -11,6 +12,9 @@ export class ObserverComponent implements OnInit {
 private socket:any;
 private messages = new Array();
 private messageText = "";
+private messagePoints = "";
+
+values: any;
 
     // messageText: string;
     // messages: Array<any>;
@@ -19,49 +23,41 @@ private messageText = "";
     constructor() {
         this.socket = io('http://localhost:3000');
         // this.socket = io.connect();
+       this.values = this.listen('mp').subscribe((messageMap) => {
+            console.log('Received the following data with the "listen" conmmand: ', messageMap);
+        })
        }
+
+       sendPotatoStuff(){
+
+
+    }
 
        ngOnInit() {
         this.messages = new Array();
-        console.log('STARTED:', this.messages);
-        console.dir('Pingu says:', this.messages);
+        this.messageText = "My username";
+        this.messagePoints = "3";
 
-        //Todo: Figure out how to emit an event (Broadcast?)
-        this.socket.emit('potato', () => {
-            this.messages.push('Start_Potato')
-            console.log('Emit The Potato!');
-        });
+        //Broadcast the potato event; should contain the selected value of the user and its name
+        console.log('Emitting the event "potato" with the following values:,', this.messages);
+        this.socket.emit('potato', {user: this.messageText, points: this.messagePoints });
 
-        console.log('Should emit potato, reading event now', this.messages);
-
-        //TODO: Figure our how to react to an event (Listener?)
-        this.socket.on('potato', () => {
-            console.log('Potato has entered the virtual env!')
-        });
-
-        this.socket.on('message-received', (msg: any) => {
-            this.messages.push(msg);
-            console.log(msg);
-            console.log(this.messages);
-        });
-
-      this.socket.emit('event1', {
-          msg: 'Client to server, can you hear me server?'
-      });
-
-      this.socket.on('event1', (data: any) => {
-        console.log('Event 1 emitted.')
-
-        console.log(data.msg);
-        this.socket.emit('event3', {
-            msg: 'Yes, its working for me!!'
-        });
-
-      });
-      this.socket.on('event4', (data: any) => {
-          console.log(data.msg);
-      });
+        //Listen for new inputs from other users that need to be displayed
+        this.listen('mp').subscribe((data) => {
+            console.log('Data received from the server', data);
+        })
    }   
+
+
+   listen(eventName: string){
+       return new Observable((subscriber) => {
+           this.socket.on(eventName, (data:any) =>{
+               subscriber.next(data);
+           })
+       });
+   }
+
+
 
    sendMessage() {
     const message = {
