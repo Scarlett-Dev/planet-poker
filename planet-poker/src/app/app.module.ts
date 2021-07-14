@@ -14,6 +14,8 @@ import {MatExpansionPanel} from "@angular/material/expansion";
 import {MatNavList} from "@angular/material/list";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import { ObserverComponent } from './observer/observer.component';
+import {MatFormField, MatFormFieldModule} from "@angular/material/form-field";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -30,7 +32,10 @@ import { ObserverComponent } from './observer/observer.component';
     MatToolbarModule,
     MatCardModule,
     MatButtonModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    FormsModule
 
   ],
   providers: [],

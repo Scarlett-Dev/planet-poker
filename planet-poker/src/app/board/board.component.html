@@ -1,5 +1,21 @@
 <h2>Room placeholder</h2>
 
+<!--<mat-form-field appearance="fill">-->
+<!--  <mat-label>Username</mat-label>-->
+<!--  <input-->
+
+
+<!--</mat-form-field>-->
+ <input id="userbox"
+         type="text"
+        [(ngModel)]="usernameInput"
+        placeholder="Username">
+
+
+
+
+<button (click)="getUsername(usernameInput)"> Get Username</button>
+<br>
 <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
   <mat-button-toggle value="standard" (click)="onToggle('standard')">Standard</mat-button-toggle>
   <mat-button-toggle value="tshirt" (click)="onToggle('tshirt')">T-Shirt</mat-button-toggle>
@@ -21,7 +37,7 @@
 
       <!-- TODO: Align the dumb button nicely! -->
       <mat-card-actions >
-        <button mat-raised-button class="button " >Submit!</button>
+        <button mat-raised-button class="button " (click) ="buttonClicked(card)" >Submit!</button>
       </mat-card-actions>
 
 

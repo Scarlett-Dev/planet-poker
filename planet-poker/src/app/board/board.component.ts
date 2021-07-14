@@ -1,15 +1,25 @@
-import {Component} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {UserService} from "../user.service";
 
 @Component({
   selector: 'app-board',
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.css']
 })
-export class BoardComponent {
-  gameMode= '';
+export class BoardComponent  {
+
+  gameMode = '';
+
 
   tshirtArray = ['S', 'M', 'L', 'XL', 'XXL'];
   arraystandard = ['1',  '2', '3', '5', '8', '13', '20', '40', '100'];
+
+  constructor(public userService: UserService) {
+
+  }
+  // tslint:disable-next-line:typedef
+  usernameInput: any;
 
   onToggle(value: string){
     this.gameMode = value;
@@ -23,6 +33,22 @@ export class BoardComponent {
     }
   }
 
+  getUsername(username:any){
+
+
+    console.log("User: " + username);
+
+    this.userService.createUser(username);
+
+
+
+    // get username from input field
+
+  }
+
+  buttonClicked(card: string){
+    console.log("Card " + card + " clicked!");  // Add this score to the object ?
+  }
 
 
 
