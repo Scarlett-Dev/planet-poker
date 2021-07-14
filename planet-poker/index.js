@@ -9,18 +9,18 @@ const io = new Server(server);
 messagesMap = new Map();
 
 var jsonCollection = {
-  user: [
+  "user": [
     {
-    username: "StandardOne",
-    points: "1"
+      "username": "StandardOne",
+      "points": "1"
     },
     {
-      username: "StandardTwo",
-      points: "2"
-      }
+      "username": "StandardTwo",
+      "points": "2"
+    }
   ]
+};
 
-}
 
 var corsOptions = {
   origin: 'http://localhost/',
@@ -60,12 +60,9 @@ io.on('connection', (socket) => {
     socket.emit('mp', jsonCollection);
     console.log('Emitted the event "mashed potato" with the following values: ', jsonCollection)
 
-
-    // console.log('show all the events', socket.adapter.rooms)
   });
 
 });
-
 
 server.listen(3000, () => {
   console.log('listening on *:3000');

@@ -36,6 +36,12 @@
 
 }
 
+.mat-cell{
+  padding: 15px 15px 15px 0;
+  font-size:1em;
+  text-align: center;
+}
+
 /* Clear floats after the columns */
 .row:after {
   content: "";

@@ -3,6 +3,10 @@ import {Injectable} from "@angular/core";
 @Injectable({  providedIn: 'root'})
 export class UserService{
 
+  
+
+
+
   /**
    * user filled in name, now create an JSON object with username and add it to existing JSON Array
    */
@@ -38,5 +42,8 @@ export class UserService{
   closeSession(){
 
   }
+
+
+  
 
 }

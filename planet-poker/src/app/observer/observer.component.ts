@@ -29,11 +29,13 @@ values: any;
        }
 
        sendPotatoStuff(){
-
-
+        //todo : update json collection on btn click
     }
 
        ngOnInit() {
+           
+        //todo: user connected -> emit event with username that a user has joined.
+
         this.messages = new Array();
         this.messageText = "My username";
         this.messagePoints = "3";
@@ -44,8 +46,10 @@ values: any;
 
         //Listen for new inputs from other users that need to be displayed
         this.listen('mp').subscribe((data) => {
+            //updatePlayerScoreOverview()
             console.log('Data received from the server', data);
         })
+
    }   
 
 

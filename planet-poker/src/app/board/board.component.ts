@@ -11,6 +11,10 @@ export class BoardComponent  {
 
   gameMode = '';
 
+  //TODO: populate array with values received from the server.
+  scoresByUserArray = [{"name": 'Pingu', "score": '3'},{"name": 'Snorlax', "score": '1'}]
+  columnsToDisplay: string[] =['name', 'score']; 
+
 
   tshirtArray = ['S', 'M', 'L', 'XL', 'XXL'];
   arraystandard = ['1',  '2', '3', '5', '8', '13', '20', '40', '100'];
