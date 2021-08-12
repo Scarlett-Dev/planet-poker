@@ -26,10 +26,12 @@ export class UserService {
   createUser(userData: string) {
     // console.log("in Service ");
     this.socket.emit(this.newUserCreated, userData);
-    console.log("emitting event that user is created" + userData );
-
-
+    console.log("emitting event that user is created: " + userData );
   }
+
+  // onCreatedUser(users: string){
+  //   this.socket.on()
+  // }
 
   /**
    * set score from selected card

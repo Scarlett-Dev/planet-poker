@@ -6,7 +6,12 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
+
+const userAddedEvent = 'new_user_added';
+
 messagesMap = new Map();
+
+var userArray = [];
 
 var jsonCollection = {
   "user": [
@@ -47,22 +52,39 @@ app.get('/', cors(corsOptions), (req, res) => {
 
 io.on('connection', (socket) => {
   console.log('a user connected');
+  socket.on('new_user_created', function(messageText){
+    console.log("In socket.on "+messageText);
+    newUserCreated(messageText, socket)
+  });
 
-  socket.on('potato', function(messageText) {
-    console.log('The Collection of the passed stuff:', messageText)
-    console.log('The username: ', messageText.user);
-    console.log('The selected points: ', messageText.points);
+  // socket.on('potato', function(messageText) {
+  //   console.log('The Collection of the passed stuff:', messageText)
+  //   console.log('The username: ', messageText.user);
+  //   console.log('The selected points: ', messageText.points);
 
-    messagesMap.set(messageText.user, messageText.points);
+  //   messagesMap.set(messageText.user, messageText.points);
 
-    console.log('Sending the following values to Angular: ', jsonCollection);
+  //   console.log('Sending the following values to Angular: ', jsonCollection);
 
-    socket.emit('mp', jsonCollection);
-    console.log('Emitted the event "mashed potato" with the following values: ', jsonCollection)
+  //   socket.emit('mp', jsonCollection);
+  //   console.log('Emitted the event "mashed potato" with the following values: ', jsonCollection)
 
   });
 
-});
+  /**
+   * 
+   * @param {*} data 
+   * @param {*} socket 
+   */
+function newUserCreated(data, socket){
+  userArray.push(data);
+  console.log("Added the new user to the array ", userArray);
+
+  socket.emit(userAddedEvent, userArray);
+  console.log("Emitting new event that the user was added.");
+}
+
+
 
 server.listen(3000, () => {
   console.log('listening on *:3000');

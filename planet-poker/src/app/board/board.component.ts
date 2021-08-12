@@ -15,7 +15,7 @@ export class BoardComponent  {
 
   //TODO: populate array with values received from the server.
   scoresByUserArray = [{"name": 'Pingu', "score": '3'},{"name": 'Snorlax', "score": '1'}]
-  columnsToDisplay: string[] =['name', 'score'];
+  columnsToDisplay: string[] =['name', 'score']; 
 
 
   tshirtArray = ['S', 'M', 'L', 'XL', 'XXL'];
@@ -39,24 +39,14 @@ export class BoardComponent  {
     }
   }
 
-  getUsername(username:any){
-
+  getUsername(username:any){   
+    console.log("The fetched username "+username);
+    
     let data = JSON.stringify(new User(username, 0));
+
+    this.userArray.push(data);
     this.userService.createUser(data);
-    // let user = User.fromJSON(JSON.parse(data));
-    //
-    // console.log("the json data "+ new User(username,0).toJSON);
-    //
-    // this.userArray.push(data);
-    // // let user = User.fromJSON(JSON.parse(data));
-    //
-    // console.log("User: " + username);
-
-    this.userService.createUser(username);
-
-    // console.log("Array of users updated!: "+JSON.stringify(this.userArray));
-
-    // get username from input field
+    console.log("Emit event that a new user is created "+data);
   }
 
   buttonClicked(card: string){
