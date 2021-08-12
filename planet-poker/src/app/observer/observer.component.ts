@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import {io, Socket} from 'socket.io-client';
+import {UserService} from "../user.service";
 
 @Component({
     selector: 'app-observer',
@@ -18,9 +19,9 @@ values: any;
 
     // messageText: string;
     // messages: Array<any>;
-    // socket: ObserverComponent.Socket; 
+    // socket: ObserverComponent.Socket;
 
-    constructor() {
+    constructor(private userService: UserService) {
         this.socket = io('http://localhost:3000');
         // this.socket = io.connect();
        this.values = this.listen('mp').subscribe((messageMap) => {
@@ -33,7 +34,7 @@ values: any;
     }
 
        ngOnInit() {
-           
+
         //todo: user connected -> emit event with username that a user has joined.
 
         this.messages = new Array();
@@ -42,7 +43,7 @@ values: any;
 
         //Broadcast the potato event; should contain the selected value of the user and its name
         console.log('Emitting the event "potato" with the following values:,', this.messages);
-        this.socket.emit('potato', {user: this.messageText, points: this.messagePoints });
+        // this.socket.emit('potato', {user: this.messageText, points: this.messagePoints });
 
         //Listen for new inputs from other users that need to be displayed
         this.listen('mp').subscribe((data) => {
@@ -50,7 +51,7 @@ values: any;
             console.log('Data received from the server', data);
         })
 
-   }   
+   }
 
 
    listen(eventName: string){
@@ -60,6 +61,8 @@ values: any;
            })
        });
    }
+
+
 
 
 
