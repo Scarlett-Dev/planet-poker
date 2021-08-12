@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../user.service";
+import {User} from "../model/user";
 
 @Component({
   selector: 'app-board',
@@ -10,6 +11,7 @@ import {UserService} from "../user.service";
 export class BoardComponent  {
 
   gameMode = '';
+  userArray:string[] = [];
 
   //TODO: populate array with values received from the server.
   scoresByUserArray = [{"name": 'Pingu', "score": '3'},{"name": 'Snorlax', "score": '1'}]
@@ -37,17 +39,22 @@ export class BoardComponent  {
     }
   }
 
-  getUsername(username:any){
+  getUsername(username:any){   
+    let data = JSON.stringify(new User(username, 0));
+    let user = User.fromJSON(JSON.parse(data));
 
+    console.log("the json data "+ new User(username,0).toJSON);
+
+    this.userArray.push(data);
+    // let user = User.fromJSON(JSON.parse(data));
 
     console.log("User: " + username);
 
     this.userService.createUser(username);
 
-
+    console.log("Array of users updated!: "+JSON.stringify(this.userArray));
 
     // get username from input field
-
   }
 
   buttonClicked(card: string){
