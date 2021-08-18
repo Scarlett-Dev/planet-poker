@@ -7,15 +7,12 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 
 
+
 const userAddedEvent = 'new_user_added';
 
 messagesMap = new Map();
 
 var userArray = [];
-
-
-
-
 
 var corsOptions = {
   origin: 'http://localhost/',
@@ -55,11 +52,11 @@ io.on('connection', (socket) => {
    * @param {*} socket 
    */
 function newUserCreated(data, socket){
-  userArray.push(data);
-  console.log("Added the new user to the array ", userArray);
-
-  
-  socket.emit(userAddedEvent, userArray);
+  userArray.push(JSON.parse(data));
+  //   userArray.push(data);
+ 
+  socket.emit(userAddedEvent, JSON.stringify(userArray));
+  // socket.emit(userAddedEvent, userArray);
   console.log("Emitting new event that the user was added.", userArray);
 }
 

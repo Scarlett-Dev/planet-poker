@@ -18,7 +18,9 @@ export class BoardComponent implements OnInit  {
   //TODO: populate array with values received from the server.
   // scoresByUserArray = [{"name": 'Pingu', "score": '3'},{"name": 'Snorlax', "score": '1'}]
   scoresByUserArray:string[] = [];
+
   columnsToDisplay: string[] =['name', 'score']; 
+
 
 
   tshirtArray = ['S', 'M', 'L', 'XL', 'XXL'];

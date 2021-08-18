@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {io} from "socket.io-client";
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, from, Observable } from 'rxjs';
+import {User} from "./model/user";
 
 @Injectable({providedIn: 'root'})
 export class UserService {
@@ -27,14 +28,21 @@ export class UserService {
   }
 
   public onCreatedUser = () => {
-    this.socket.on(this.userAddedEvent, (message:any) =>{
+    this.socket.on(this.userAddedEvent, (message:string) =>{
+      let jsonObject: User[] = JSON.parse(message);
       this.message$.next(message);
-      console.log('Received event that a new user was added.')
+  
+      jsonObject.forEach(element => {
+        console.log("The entire user", element);
+        console.log("The user name",element.name);
+        console.log("The user score",element.selectedScore);
+      });
+
+      console.log('Received event that a new user was added.', JSON.parse(message))
     });
     
     return this.message$.asObservable();
   };
-
 
   /**
    * set score from selected card

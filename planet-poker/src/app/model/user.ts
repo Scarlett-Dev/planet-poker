@@ -1,8 +1,8 @@
 export class User {
 
   constructor(
-    private name: string,
-    private selectedScore: number
+    public name: string,
+    public selectedScore: number
   ) {
 
   }
