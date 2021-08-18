@@ -19,6 +19,9 @@ export class UserService {
    */
   private readonly newUserCreated = 'new_user_created';
 
+  
+  private readonly userAddedEvent = 'new_user_added';
+
   /**
    *
    * @param username
@@ -29,9 +32,12 @@ export class UserService {
     console.log("emitting event that user is created: " + userData );
   }
 
-  // onCreatedUser(users: string){
-  //   this.socket.on()
-  // }
+  onCreatedUser(){
+    this.socket.on(this.userAddedEvent, function(messageText:any){
+      return messageText;
+    });
+    
+  }
 
   /**
    * set score from selected card
