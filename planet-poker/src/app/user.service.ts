@@ -1,17 +1,15 @@
 import {Injectable} from "@angular/core";
 import {io} from "socket.io-client";
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class UserService {
   private socket:any;
 
+  public message$: BehaviorSubject<string> = new BehaviorSubject('');
 
   constructor() {
     this.socket = io('http://localhost:3000');
-    // this.socket = io.connect();
-    // this.values = this.listen('mp').subscribe((messageMap) => {
-    //   console.log('Received the following data with the "listen" conmmand: ', messageMap);
-    // })
   }
 
   /**
@@ -22,22 +20,21 @@ export class UserService {
   
   private readonly userAddedEvent = 'new_user_added';
 
-  /**
-   *
-   * @param username
-   */
+
   createUser(userData: string) {
-    // console.log("in Service ");
     this.socket.emit(this.newUserCreated, userData);
     console.log("emitting event that user is created: " + userData );
   }
 
-  onCreatedUser(){
-    this.socket.on(this.userAddedEvent, function(messageText:any){
-      return messageText;
+  public onCreatedUser = () => {
+    this.socket.on(this.userAddedEvent, (message:any) =>{
+      this.message$.next(message);
+      console.log('Received event that a new user was added.')
     });
     
-  }
+    return this.message$.asObservable();
+  };
+
 
   /**
    * set score from selected card

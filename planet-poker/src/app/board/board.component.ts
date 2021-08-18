@@ -16,8 +16,8 @@ export class BoardComponent implements OnInit  {
   userArray:string[] = [];
 
   //TODO: populate array with values received from the server.
-  scoresByUserArray = [{"name": 'Pingu', "score": '3'},{"name": 'Snorlax', "score": '1'}]
-  dummyArray:any;
+  // scoresByUserArray = [{"name": 'Pingu', "score": '3'},{"name": 'Snorlax', "score": '1'}]
+  scoresByUserArray:string[] = [];
   columnsToDisplay: string[] =['name', 'score']; 
 
 
@@ -27,42 +27,17 @@ export class BoardComponent implements OnInit  {
   constructor(public userService: UserService) {
     this.socket = io('http://localhost:3000');
 
-// TODO: Fix
-  //   this.dummyArray  = this.listen('new_user_added').subscribe((data:any) => {
-  //     console.log('constructor Received the following data with the "listen" conmmand: ', data);
-  //   });
-  
-  //   this.listen('new_user_added').subscribe((data) => {
-  //     //updatePlayerScoreOverview()
-  //     console.log('constructor Data received from the server', data);
-  // })
-  
-  //   this.socket.on('new_user_added', function(messageText:any){
-  //     console.log("constructor Listening for zwik on socket "+messageText);
-  //   });
-
-
-
  }
 
  ngOnInit() {
-  this.dummyArray  = this.listen('new_user_added').subscribe((data:any) => {
-    console.log('Received the following data with the "listen" conmmand: ', data);
-  });
 
-  this.listen('new_user_added').subscribe((data) => {
-    //updatePlayerScoreOverview()
-    console.log('Data received from the server', data);
-})
+  this.userService.onCreatedUser().subscribe((message: string) => {
 
-  this.socket.on('new_user_added', function(messageText:any){
-    console.log("Listening for zwik on socket "+messageText);
-  });
-
+    this.scoresByUserArray.push(message);
+    console.log('updating array with code from internet.', this.scoresByUserArray)
+  })
 }
 
-
-  // tslint:disable-next-line:typedef
   usernameInput: any;
 
   onToggle(value: string){
@@ -90,16 +65,4 @@ export class BoardComponent implements OnInit  {
   buttonClicked(card: string){
     console.log("Card " + card + " clicked!");  // Add this score to the object ?
   }
-
-
-  listen(eventName: string){
-    return new Observable((subscriber) => {
-        this.socket.on(eventName, (data:any) =>{
-            subscriber.next(data);
-        })
-    });
-}
-
-
-
 }

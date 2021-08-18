@@ -13,20 +13,8 @@ messagesMap = new Map();
 
 var userArray = [];
 
-var emitRdy = false;
 
-var jsonCollection = {
-  "user": [
-    {
-      "username": "StandardOne",
-      "points": "1"
-    },
-    {
-      "username": "StandardTwo",
-      "points": "2"
-    }
-  ]
-};
+
 
 
 var corsOptions = {
@@ -59,21 +47,6 @@ io.on('connection', (socket) => {
     newUserCreated(messageText, socket)
   });
 
-  // socket.on('potato', function(messageText) {
-  //   console.log('The Collection of the passed stuff:', messageText)
-  //   console.log('The username: ', messageText.user);
-  //   console.log('The selected points: ', messageText.points);
-
-  //   messagesMap.set(messageText.user, messageText.points);
-
-  //   console.log('Sending the following values to Angular: ', jsonCollection);
-    if(!emitRdy){
-      socket.emit(userAddedEvent, userArray);
-      console.log("AGAIN: Emitting new event that the user was added.");
-    }
-
-  //   console.log('Emitted the event "mashed potato" with the following values: ', jsonCollection)
-
   });
 
   /**
@@ -86,13 +59,9 @@ function newUserCreated(data, socket){
   console.log("Added the new user to the array ", userArray);
 
   
-
-  socket.emit(userAddedEvent, userArray.toLocaleString);
-  console.log("Emitting new event that the user was added.", userArray.toLocaleString);
-
-  emitRdy = true;
+  socket.emit(userAddedEvent, userArray);
+  console.log("Emitting new event that the user was added.", userArray);
 }
-
 
 
 server.listen(3000, () => {
