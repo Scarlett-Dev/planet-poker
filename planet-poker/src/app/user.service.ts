@@ -1,12 +1,18 @@
 import {Injectable} from "@angular/core";
 import {io} from "socket.io-client";
-import { BehaviorSubject, from, Observable } from 'rxjs';
+import {BehaviorSubject, from, Observable, Subject} from 'rxjs';
 import {User} from "./model/user";
+import {throwNullPortalOutletError} from "@angular/cdk/portal/portal-errors";
 
 @Injectable({providedIn: 'root'})
 export class UserService {
   private socket:any;
+  users: User[] = [];
 
+  newUser: User | undefined;
+
+
+  private usersUpdated = new Subject<User[]>();
   public message$: BehaviorSubject<string> = new BehaviorSubject('');
 
   constructor() {
@@ -18,8 +24,9 @@ export class UserService {
    */
   private readonly newUserCreated = 'new_user_created';
 
-  
+
   private readonly userAddedEvent = 'new_user_added';
+  // private newUser: User;
 
 
   createUser(userData: string) {
@@ -30,20 +37,57 @@ export class UserService {
   public onCreatedUser = () => {
     this.socket.on(this.userAddedEvent, (message:string) =>{
       let jsonObject: User[] = JSON.parse(message);
+      console.log("JSONOBJECT" + jsonObject);
       this.message$.next(message);
-  
+
+
+      //TODO this actually works, but copies users too much...
+      // so If the user DOESNT exist, we want to add it to the array!
       jsonObject.forEach(element => {
-        console.log("The entire user", element);
+        if(this.users.includes(element)){
+          console.log("user exists")
+        }
+        else{
+          this.users.push(element);
+          console.log("*/*/*/*/" + this.usersUpdated.next([...this.users]));
+
+        }
+
+
+
+
+        console.log( "LENGTH OF" + this.users.length);
+
+        // this.users.splice(0, this.users.length);
+        // console.log("The entire user", element);
         console.log("The user name",element.name);
         console.log("The user score",element.selectedScore);
+
+        this.newUser = new User(element.name, 0);
+        this.users.push(this.newUser);
+
       });
 
-      console.log('Received event that a new user was added.', JSON.parse(message))
+
+      // this.users = jsonObject;
+      // this.usersUpdated.next([...message]);
+
+
+
+      //TODO this message needs to be accessible in the board component.
+      console.log('Received event that a new user was added.', JSON.parse(message));
+      // console.log(this.usersUpdated.next([...this.users]));
     });
-    
+    console.log("Before return");
+    // this.usersUpdated.next([...this.users]);
     return this.message$.asObservable();
   };
 
+    getUpdateListener(){
+      console.log("updatelistener activated")
+      return this.usersUpdated.asObservable();
+
+    }
   /**
    * set score from selected card
    */
