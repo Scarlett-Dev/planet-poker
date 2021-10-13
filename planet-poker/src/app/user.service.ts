@@ -1,13 +1,18 @@
 import {Injectable} from "@angular/core";
 import {io} from "socket.io-client";
-import { BehaviorSubject, from, Observable } from 'rxjs';
+import { BehaviorSubject, from, Observable, Subject } from 'rxjs';
 import {User} from "./model/user";
 
 @Injectable({providedIn: 'root'})
 export class UserService {
   private socket:any;
 
-  public message$: BehaviorSubject<string> = new BehaviorSubject('');
+  public message$: BehaviorSubject<any> = new BehaviorSubject('');
+
+  
+  public singleMessage$: BehaviorSubject<any> = new BehaviorSubject('');
+
+  receivedUserArray: User[]= [];
 
   constructor() {
     this.socket = io('http://localhost:3000');
@@ -20,6 +25,7 @@ export class UserService {
 
   
   private readonly userAddedEvent = 'new_user_added';
+  private readonly singleUserAddedEvent = 'single_new_user_added';
 
 
   createUser(userData: string) {
@@ -28,21 +34,40 @@ export class UserService {
   }
 
   public onCreatedUser = () => {
-    this.socket.on(this.userAddedEvent, (message:string) =>{
+    this.socket.on(this.userAddedEvent, (message:any) =>{
       let jsonObject: User[] = JSON.parse(message);
-      this.message$.next(message);
+      this.message$.next(JSON.parse(message));
+      console.log("user message in service: "+message)
+
   
       jsonObject.forEach(element => {
-        console.log("The entire user", element);
-        console.log("The user name",element.name);
-        console.log("The user score",element.selectedScore);
+        if(!this.receivedUserArray.includes(element)){
+            this.receivedUserArray.push(element);
+        }
+
+        // console.log("The entire user", element);
+        // console.log("The user name",element.name);
+        // console.log("The user score",element.selectedScore);
       });
 
-      console.log('Received event that a new user was added.', JSON.parse(message))
+        console.log("All received users: ", this.receivedUserArray)
+      // console.log('Received event that a new user was added.', JSON.parse(message))
     });
-    
+
+
+    //todo: fix issue in observable that destroys the json string. Unable to parse it by board.component
     return this.message$.asObservable();
   };
+
+  public onSingleCreatedUser = () => {
+    this.socket.on(this.singleUserAddedEvent, (message:any) =>{
+      // let jsonObject: User[] = JSON.parse(message);
+      this.singleMessage$.next(JSON.parse(message));
+      console.log("received SINGLE user in service: "+message)
+    })
+    return this.singleMessage$.asObservable();
+  };
+
 
   /**
    * set score from selected card
@@ -68,6 +93,5 @@ export class UserService {
   closeSession() {
 
   }
-
 
 }

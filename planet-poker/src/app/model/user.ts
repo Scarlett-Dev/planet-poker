@@ -1,5 +1,8 @@
 export class User {
 
+  //todo: fix getter and setter methods
+  //todo: make name and selectedScore private
+
   constructor(
     public name: string,
     public selectedScore: number

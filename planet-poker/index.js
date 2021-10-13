@@ -9,6 +9,8 @@ const io = new Server(server);
 
 
 const userAddedEvent = 'new_user_added';
+const singleUserAddedEvent = 'single_new_user_added';
+
 
 messagesMap = new Map();
 
@@ -41,7 +43,8 @@ io.on('connection', (socket) => {
   console.log('a user connected');
   socket.on('new_user_created', function(messageText){
     console.log("In socket.on "+messageText);
-    newUserCreated(messageText, socket)
+    newUserCreated(messageText, socket);
+    newUserTestForSingleEntry(messageText, socket);
   });
 
   });
@@ -53,11 +56,18 @@ io.on('connection', (socket) => {
    */
 function newUserCreated(data, socket){
   userArray.push(JSON.parse(data));
-  //   userArray.push(data);
- 
+  //   userArray.push(data); 
   socket.emit(userAddedEvent, JSON.stringify(userArray));
   // socket.emit(userAddedEvent, userArray);
   console.log("Emitting new event that the user was added.", userArray);
+}
+
+
+function newUserTestForSingleEntry(data, socket){
+    //   userArray.push(data); 
+  socket.emit(singleUserAddedEvent, data);
+  // socket.emit(userAddedEvent, userArray);
+  console.log("Emitting new event: SINGLE user was added.", data);
 }
 
 
