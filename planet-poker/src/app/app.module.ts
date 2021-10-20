@@ -8,9 +8,14 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import {MatTableModule} from '@angular/material/table'; 
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox'
+import { MatInputModule } from '@angular/material/input'
+import { MatDialogModule } from '@angular/material/dialog'
 
 import { BoardComponent } from './board/board.component';
 import { CardComponent } from './card/card.component';
+import { LoginComponent } from './login/login.component';
 import {MatExpansionPanel} from "@angular/material/expansion";
 import {MatNavList} from "@angular/material/list";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
@@ -25,7 +30,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     HeaderComponent,
     BoardComponent,
     CardComponent,
-    ObserverComponent
+    ObserverComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +43,11 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     MatFormFieldModule,
     ReactiveFormsModule,
     FormsModule,
-    MatTableModule
+    MatTableModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    MatInputModule,
+    MatDialogModule
 
   ],
   providers: [],

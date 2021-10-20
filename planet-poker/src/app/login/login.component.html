@@ -1,0 +1,52 @@
+<br />
+<mat-form-field appearance="fill">
+  <mat-label>Username</mat-label>
+  <input matInput id="usernameInput" [formControl]="user" required />
+  <mat-error *ngIf="user.invalid">Please enter a username!</mat-error>
+</mat-form-field>
+
+<br />
+<mat-checkbox
+  class="example-margin"
+  id="newSessionCheckBox"
+  (click)="onToggleCheckBox()"
+  >Create new Session</mat-checkbox
+>
+
+<br />
+<div *ngIf="!isNewSession">
+  <mat-form-field appearance="fill">
+    <mat-label>Session ID</mat-label>
+    <input matInput id="sessionInput" [formControl]="sessionId" />
+    <mat-error *ngIf="sessionId.invalid"
+      >Please enter a session ID to join!</mat-error
+    >
+  </mat-form-field>
+  <br />
+  <button
+    mat-raised-button
+    (click)="onClickJoinSession()"
+    color="primary"
+  >
+    Join Session
+  </button>
+</div>
+
+<div *ngIf="isNewSession">
+  <mat-form-field appearance="fill">
+    <mat-label>Select A Game Mode</mat-label>
+    <!-- TODO: check for proper binding to the ts -->
+    <mat-select value="Gamemode.Standard" [formControl]="gamemodeSelection">
+      <mat-option value="Gamemode.Standard">{{ Gamemode.Standard }}</mat-option>
+      <mat-option value="Gamemode.TShirt">{{ Gamemode.TShirt }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <br />
+  <button
+    mat-raised-button
+    (click)="onClickCreateSession()"
+    color="primary"
+  >
+    Create a new Session
+  </button>
+</div>
