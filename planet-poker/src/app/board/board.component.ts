@@ -31,7 +31,7 @@ export class BoardComponent implements OnInit {
   arraystandard = ['1', '2', '3', '5', '8', '13', '20', '40', '100'];
 
   constructor(public userService: UserService) {
-    this.socket = io('http://localhost:3000');
+    this.socket = io('http://localhost:8080');
   }
 
   ngOnInit() {

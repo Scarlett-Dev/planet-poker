@@ -1,12 +1,17 @@
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatSelect } from '@angular/material/select';
+import {Session} from "../model/session";
+import {User} from "../model/user";
+import {UserService} from "../user.service";
+import {io} from "socket.io-client";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
 })
 export class LoginComponent {
+  private socket: any;
   isNewSession: boolean = false;
   Gamemode = Gamemode;
 
@@ -14,6 +19,10 @@ export class LoginComponent {
   sessionId = new FormControl('', [Validators.required]);
   gamemodeSelection = new FormControl('', [Validators.required]);
 
+
+  constructor(public userService: UserService) {
+    this.socket = io('http://localhost:8080');
+  }
   onToggleCheckBox() {
     this.isNewSession = !this.isNewSession;
   }
@@ -27,9 +36,10 @@ export class LoginComponent {
           ' is joining the session ' +
           this.sessionId.value
       );
+
     } else {
       //TODO: Show error
-      
+
     }
   }
 
@@ -44,7 +54,15 @@ export class LoginComponent {
           randomSessionId +
           ' with game mode ' +
           this.gamemodeSelection.value
+
+
+
       );
+
+      const session = new Session(randomSessionId, new Array(new User(this.user.value, 0)));
+      console.log(session)
+      this.userService.createSession(session);
+
     } else {
       //TODO: Show error
     }

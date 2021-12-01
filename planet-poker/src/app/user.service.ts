@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {io} from "socket.io-client";
 import { BehaviorSubject, from, Observable, Subject } from 'rxjs';
 import {User} from "./model/user";
+import {Session} from "./model/session";
 
 @Injectable({providedIn: 'root'})
 export class UserService {
@@ -9,21 +10,22 @@ export class UserService {
 
   public message$: BehaviorSubject<any> = new BehaviorSubject('');
 
-  
+
   public singleMessage$: BehaviorSubject<any> = new BehaviorSubject('');
 
   receivedUserArray: User[]= [];
 
   constructor() {
-    this.socket = io('http://localhost:3000');
+    this.socket = io('http://localhost:8080');
   }
 
   /**
    * user filled in name, now create an JSON object with username and add it to existing JSON Array
    */
   private readonly newUserCreated = 'new_user_created';
+  private readonly newSessionCreated = 'new_session_created';
 
-  
+
   private readonly userAddedEvent = 'new_user_added';
   private readonly singleUserAddedEvent = 'single_new_user_added';
 
@@ -32,6 +34,10 @@ export class UserService {
     this.socket.emit(this.newUserCreated, userData);
     console.log("emitting event that user is created: " + userData );
   }
+  createSession(newSession: Session) {
+    this.socket.emit(this.newSessionCreated, newSession);
+    console.log("emitting event that SESSION is created with sexy getter implemented :) : " + newSession.getSessionID);
+  }
 
   public onCreatedUser = () => {
     this.socket.on(this.userAddedEvent, (message:any) =>{
@@ -39,7 +45,7 @@ export class UserService {
       this.message$.next(JSON.parse(message));
       console.log("user message in service: "+message)
 
-  
+
       jsonObject.forEach(element => {
         if(!this.receivedUserArray.includes(element)){
             this.receivedUserArray.push(element);

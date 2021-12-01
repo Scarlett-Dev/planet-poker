@@ -22,7 +22,7 @@ values: any;
     // socket: ObserverComponent.Socket;
 
     constructor(private userService: UserService) {
-        this.socket = io('http://localhost:3000');
+        this.socket = io('http://localhost:8080');
         // this.socket = io.connect();
        this.values = this.listen('mp').subscribe((messageMap) => {
             console.log('Received the following data with the "listen" conmmand: ', messageMap);
