@@ -2,8 +2,10 @@ import {Injectable} from "@angular/core";
 import {io} from "socket.io-client";
 import { BehaviorSubject, from, Observable, Subject } from 'rxjs';
 import {User} from "./model/user";
+import { deprecate } from "util";
 
 @Injectable({providedIn: 'root'})
+// @deprecated
 export class UserService {
   private socket:any;
 
@@ -33,6 +35,7 @@ export class UserService {
     console.log("emitting event that user is created: " + userData );
   }
 
+  
   public onCreatedUser = () => {
     this.socket.on(this.userAddedEvent, (message:any) =>{
       let jsonObject: User[] = JSON.parse(message);

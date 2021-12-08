@@ -6,11 +6,10 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
-
-
 const userAddedEvent = 'new_user_added';
 const singleUserAddedEvent = 'single_new_user_added';
 
+//TODO: Remove deprecated code
 
 messagesMap = new Map();
 
@@ -62,7 +61,6 @@ function newUserCreated(data, socket){
   console.log("Emitting new event that the user was added.", userArray);
 }
 
-
 function newUserTestForSingleEntry(data, socket){
     //   userArray.push(data); 
   socket.emit(singleUserAddedEvent, data);
@@ -71,6 +69,10 @@ function newUserTestForSingleEntry(data, socket){
 }
 
 
+
 server.listen(3000, () => {
   console.log('listening on *:3000');
 });
+
+
+

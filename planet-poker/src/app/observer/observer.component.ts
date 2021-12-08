@@ -8,7 +8,7 @@ import {UserService} from "../user.service";
     templateUrl: './observer.component.html',
     styleUrls: ['./observer.component.css']
 })
-
+//TODO: @Deprecated 
 export class ObserverComponent implements OnInit {
 private socket:any;
 private messages = new Array();

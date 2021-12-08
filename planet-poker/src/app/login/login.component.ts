@@ -18,9 +18,11 @@ export class LoginComponent {
     this.isNewSession = !this.isNewSession;
   }
 
+  //TODO: UPDATE to db with user. generateUniqueUserId()
+  
   onClickJoinSession() {
     if (this.user.valid && this.sessionId.valid) {
-      //TODO: Show the board
+      //TODO: Reroute user to the board within the new session
       console.log(
         'The user ' +
           this.user.value +
@@ -33,6 +35,7 @@ export class LoginComponent {
     }
   }
 
+ //TODO: POST to DB with sessionId and generateUniqueUserId()  -> score empty
   onClickCreateSession() {
     let randomSessionId = Math.floor(Math.random() * (99999 - 1) + 1);
 
@@ -49,7 +52,14 @@ export class LoginComponent {
       //TODO: Show error
     }
   }
+
+//TODO: 
+  generateUniqueUserId(name:String){
+    //      - Generate userId and append to name with #
+  }
+
 }
+
 
 export enum Gamemode {
   TShirt = 'T-Shirt',

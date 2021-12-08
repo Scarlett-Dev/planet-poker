@@ -16,11 +16,11 @@ export class BoardComponent implements OnInit {
   gameMode = '';
   userArray: string[] = [];
 
-  //TODO: populate array with values received from the server.
-  // scoresByUserArray = [{"name": 'Pingu', "score": '3'},{"name": 'Snorlax', "score": '1'}]
+
   scoresByUserArray: string[] = [];
 
-  //this shit should work
+  //TODO: Should be populated with get statement from DB. Also needs to be refreshed.
+  // by defeault users should be visible but scores shouldn't. (Hide with a random emoji?)
   scoresByUserTable = new MatTableDataSource<User>();
 
   singleUserArray: User[] = [];
@@ -35,12 +35,13 @@ export class BoardComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.getUsername("init!")
+
     console.log(
       'Initial values of the receivedUserArray',
       this.userService.receivedUserArray
     );
 
+    // @Deprecated -> remove this 
     this.userService.onCreatedUser().subscribe((message: any) => {
       this.scoresByUserArray.push(message);
 
@@ -54,6 +55,7 @@ export class BoardComponent implements OnInit {
       );
     });
 
+        // @Deprecated -> remove this 
     this.userService.onSingleCreatedUser().subscribe((message: any) => {
       console.log('Single user: ' + message);
       try {
@@ -70,13 +72,16 @@ export class BoardComponent implements OnInit {
       }
     });
   }
+  
 
   usernameInput: any;
 
+  //TODO: Remove from board -> add to login page
   onToggle(value: string) {
     this.gameMode = value;
   }
 
+  //TODO: Refactor -> Gamemode should be received from login page
   getGameMode() {
     if (this.gameMode === 'tshirt') {
       return this.tshirtArray;
@@ -85,6 +90,7 @@ export class BoardComponent implements OnInit {
     }
   }
 
+  //TODO: @Deprecated
   getUsername(username: any) {
     console.log('The fetched username ' + username);
 
@@ -95,7 +101,24 @@ export class BoardComponent implements OnInit {
     console.log('Emit event that a new user is created ' + data);
   }
 
+  //TODO: implement: UPDATE DB for specific user to update score (see https://stackoverflow.com/questions/10522347/how-do-you-update-objects-in-a-documents-array-nested-updating )
   buttonClicked(card: string) {
-    console.log('Card ' + card + ' clicked!'); // Add this score to the object ?
+    console.log('Card ' + card + ' clicked!'); 
+    // db.bar.update( {user_id : 123456 , "items.item_name" : "my_item_two" } , 
+    //             {$inc : {"items.$.price" : 1} } , 
+    //             false , 
+    //             true);
   }
+
+  //TODO: connect to a button on page
+  resetScores(){
+    //TODO: UPDATE to db for all users in session set score to empty
+  }
+
+  //TODO: connect to toggle btn.
+  showScores(){
+    //TODO: Show scores
+  }
+
+
 }

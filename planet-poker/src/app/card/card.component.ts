@@ -8,14 +8,9 @@ import {Component} from '@angular/core';
 
 
 export class CardComponent {
+  //TODO: check if this is being used
   arraystandard = [0, 1, 2, 3, 5, 8, 13, 20, 40, 100];
   cardContent = "Coffee!";
   message = '';
 
-
-  logToConsole(message: number) {
-    console.log("KUT MAAAAN");
-    console.log(message);
-
-  }
 }
