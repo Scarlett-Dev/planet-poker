@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
-import { Observable } from 'rxjs';
 import { User } from '../model/user';
 import { io } from 'socket.io-client';
 import { MatTableDataSource } from '@angular/material/table';
@@ -55,22 +54,6 @@ export class BoardComponent implements OnInit {
       );
     });
 
-        // @Deprecated -> remove this 
-    this.userService.onSingleCreatedUser().subscribe((message: any) => {
-      console.log('Single user: ' + message);
-      try {
-        let user = User.fromJSON(message);
-        this.singleUserArray.push(user);
-        this.scoresByUserTable.data = this.singleUserArray;
-
-        console.log('The parsed single user object:' + user.name);
-        console.log(
-          'User should be added to table collection: ' + this.scoresByUserTable
-        );
-      } catch (Exception) {
-        console.log('ERROR: Something went wrong while parsing the json');
-      }
-    });
   }
   
 

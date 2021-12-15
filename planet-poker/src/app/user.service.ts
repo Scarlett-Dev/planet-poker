@@ -2,7 +2,6 @@ import {Injectable} from "@angular/core";
 import {io} from "socket.io-client";
 import { BehaviorSubject, from, Observable, Subject } from 'rxjs';
 import {User} from "./model/user";
-import { deprecate } from "util";
 
 @Injectable({providedIn: 'root'})
 // @deprecated

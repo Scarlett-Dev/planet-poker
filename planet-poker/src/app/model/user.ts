@@ -15,6 +15,8 @@ export class User {
     return this.name;
   }
 
+  //TODO: getUserName -> without the #uniqueId
+
   getSelectedScore(): number {
     return this.selectedScore;
   }

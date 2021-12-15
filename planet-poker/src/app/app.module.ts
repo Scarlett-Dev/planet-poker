@@ -22,6 +22,9 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import { ObserverComponent } from './observer/observer.component';
 import {MatFormField, MatFormFieldModule} from "@angular/material/form-field";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { HttpClientModule } from '@angular/common/http';
+import { Router, RouterModule } from '@angular/router';
+import { AppRoutingModule } from 'src/app-routing-module';
 
 
 @NgModule({
@@ -47,7 +50,10 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     MatSelectModule,
     MatCheckboxModule,
     MatInputModule,
-    MatDialogModule
+    MatDialogModule,
+    HttpClientModule,
+    RouterModule,
+    AppRoutingModule
 
   ],
   providers: [],
