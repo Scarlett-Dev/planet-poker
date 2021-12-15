@@ -1,11 +1,15 @@
 const mongoose = require('mongoose');
 
 const SessionSchema = mongoose.Schema({
+  username: {
+    type:String,
+    required: true
+  },
+  selectedScore:  {
+    type:String,
+    required: true
+  }
 
-    // users: {
-        username: {type:String},
-        selectedScore: {type:String}
-    // }
 })
 
 module.exports = mongoose.model('Sessions', SessionSchema);

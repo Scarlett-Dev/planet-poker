@@ -1,9 +1,13 @@
+const bodyParser = require('body-parser');
+
 const express = require('express');
 const cors = require('cors');
 const app = express();
 const http = require('http');
 const server = http.createServer(app);
 const mongoose = require('mongoose');
+
+
 const sessionRoute = require('./backend/routes/sessions');
 
 
@@ -12,7 +16,17 @@ var corsOptions = {
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
+//Connect to DB
+mongoose.connect(process.env.DB_CONNECTION , { dbName: 'planet-poker' , useNewUrlParser: true},()=> {
+  console.log('Connected to DB planet-poker');
+})
+
+// Middleware (app.use) -> everytime this route is beeing called run a function:
 app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+
+
 app.use((req,res,next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-Width, Content-Type, Accept");
@@ -31,7 +45,4 @@ server.listen(3000, () => {
 });
 
 
-//Connect to DB
-mongoose.connect(process.env.DB_CONNECTION , { dbName: 'planet-poker' , useNewUrlParser: true},()=> {
-  console.log('Connected to DB planet-poker');
-})
+

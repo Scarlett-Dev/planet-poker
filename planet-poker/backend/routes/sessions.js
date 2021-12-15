@@ -25,17 +25,17 @@ router.get("/",  (req, res) => {
 // Submit a post
 router.post('/createSession', async (req, res, next) => {
   console.log("POSTED A NEW Session");
-  console.log(req.body);
-  console.log(req.data);
+  console.log("request", req);
+  // console.log(res);
   console.log("res" + res.body);
   const session = new Session({
-      users: {
+
           username: req.body.username,
           selectedScore: req.body.selectedScore
-      }
+
   })
   try{
-    const savedSession = await post.save();
+    const savedSession = await session.save();
     res.json(savedSession);
     }catch (e) {
     res.json({message: e});

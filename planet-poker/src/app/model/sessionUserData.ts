@@ -1,9 +1,9 @@
-import { User } from "./user";
 
-export interface sessionUserData {
+
+export interface SessionUserData {
     // sessionId: String;
-    username: string, 
-    selectedScore: string
+    username: string;
+    selectedScore: string;
 
     // users: User[];
 }
@@ -13,11 +13,11 @@ export interface sessionUserData {
 // Show name without suffix, slice it at #
 // {
 // "sessionId": "randomGeneratedId",
-//     "users": [ 
+//     "users": [
 //         {
 //             "name": "Potato#27348924",
 //             "selectedScore": "3"
-//         },        
+//         },
 //         {
 //             "name": "Eerappel#1122334",
 //             "selectedScore": "1"

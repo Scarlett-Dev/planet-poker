@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpClientModule, HttpParams, HttpResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
-import {sessionUserData} from './model/sessionUserData';
+import {SessionUserData} from './model/sessionUserData';
 import {map} from 'rxjs/operators';
 import {Subject, Observable} from 'rxjs';
 
@@ -11,8 +11,8 @@ export class SessionService {
 //   private posts: Post[] = [];
 //   private postsUpdated = new Subject<Post[]>();
 //   private matTableUpdated = new Subject<Post[]>();
-  //{posts: Post[]; }
-  // Production
+// {posts: Post[]; }
+// Production
 //   postsUrl = 'https://us-central1-nodebackend-c8e6f.cloudfunctions.net/app/';
 //   insertPostsUrl = 'https://us-central1-nodebackend-c8e6f.cloudfunctions.net/app/createpost';
 //   deleteById = 'https://us-central1-nodebackend-c8e6f.cloudfunctions.net/app/';
@@ -76,9 +76,9 @@ export class SessionService {
 //     console.log("after delete post");
 
 
-//   } 
+//   }
 
-  insertPost(username: string, selectedScore: string){
+  insertPost(username: string, selectedScore: string) {
     console.log("Flow: 2. posts service insertPost")
     console.log(username, selectedScore)
     // const postData = new FormData();
@@ -91,23 +91,23 @@ export class SessionService {
       .set('username', username)
       .set('selectedScore', selectedScore);
 
-      console.log("Params after setting them: ", params.toString());
+    console.log("Params after setting them: ", params.toString());
     // const body = JSON.stringify(params);
 
     // console.log(title, description)
     // //new Response(postData).text().then(console.log);
     // console.log("params: " + params.toString());
 
-   this.http
-      .post<{message: string, session: sessionUserData}>(
+    this.http
+      .post<{ message: string, session: SessionUserData }>(
         this.insertSessionDataUrl
-        ,params)
-     .subscribe( response => {
-       console.log("the response: ", response);
+        , params)
+      .subscribe(response => {
+        console.log("the response: ", response);
 
-    //   this.router.navigate(["/summary"]);
+          this.router.navigate(["/"]);
 
-    });
+      });
 
 
     console.log("after http request Insert")
