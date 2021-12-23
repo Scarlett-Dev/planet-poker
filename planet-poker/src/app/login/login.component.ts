@@ -25,7 +25,7 @@ export class LoginComponent {
   }
 
   //TODO: UPDATE to db with user. generateUniqueUserId()
-  
+
   onClickJoinSession() {
     if (this.user.valid && this.sessionId.valid) {
       //TODO: Reroute user to the board within the new session
@@ -44,7 +44,7 @@ export class LoginComponent {
  //TODO: POST to DB with sessionId and generateUniqueUserId()  -> score empty
   onClickCreateSession() {
     if (this.user.valid && this.gamemodeSelection.valid) {
-      this.sessionsService.insertPost(this.generateUniqueUserId(this.user.value), "0");
+      this.sessionsService.insertUser(this.generateUniqueUserId(this.user.value), "0");
       // console.log(
       //   'The user ' +
       //     this.user.value +

@@ -1,7 +1,8 @@
+import {User} from "./user";
 
 
 export interface SessionUserData {
-    // sessionId: String;
+    sessionId: string;
     username: string;
     selectedScore: string;
 

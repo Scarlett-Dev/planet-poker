@@ -5,19 +5,19 @@ export class User {
   //todo: make name and selectedScore private
 
   constructor(
-    public name: string,
-    public selectedScore: number
+    public username: string,
+    public selectedScore: string
   ) {
 
   }
 
   getName(): string {
-    return this.name;
+    return this.username;
   }
 
   //TODO: getUserName -> without the #uniqueId
 
-  getSelectedScore(): number {
+  getSelectedScore(): string {
     return this.selectedScore;
   }
 
@@ -51,6 +51,6 @@ export class User {
 // A representation of User's data that can be converted to
 // and from JSON without being altered.
 interface UserJSON {
-  name: string;
+  username: string;
   selectedScore: number;
 }

@@ -17,7 +17,6 @@ export class BoardComponent implements OnInit {
 
 
   scoresByUserArray: string[] = [];
-
   //TODO: Should be populated with get statement from DB. Also needs to be refreshed.
   // by defeault users should be visible but scores shouldn't. (Hide with a random emoji?)
   scoresByUserTable = new MatTableDataSource<User>();
@@ -40,7 +39,7 @@ export class BoardComponent implements OnInit {
       this.userService.receivedUserArray
     );
 
-    // @Deprecated -> remove this 
+    // @Deprecated -> remove this
     this.userService.onCreatedUser().subscribe((message: any) => {
       this.scoresByUserArray.push(message);
 
@@ -55,7 +54,7 @@ export class BoardComponent implements OnInit {
     });
 
   }
-  
+
 
   usernameInput: any;
 
@@ -77,7 +76,7 @@ export class BoardComponent implements OnInit {
   getUsername(username: any) {
     console.log('The fetched username ' + username);
 
-    let data = JSON.stringify(new User(username, 0));
+    let data = JSON.stringify(new User(username, "0"));
 
     this.userArray.push(data);
     this.userService.createUser(data);
@@ -86,10 +85,10 @@ export class BoardComponent implements OnInit {
 
   //TODO: implement: UPDATE DB for specific user to update score (see https://stackoverflow.com/questions/10522347/how-do-you-update-objects-in-a-documents-array-nested-updating )
   buttonClicked(card: string) {
-    console.log('Card ' + card + ' clicked!'); 
-    // db.bar.update( {user_id : 123456 , "items.item_name" : "my_item_two" } , 
-    //             {$inc : {"items.$.price" : 1} } , 
-    //             false , 
+    console.log('Card ' + card + ' clicked!');
+    // db.bar.update( {user_id : 123456 , "items.item_name" : "my_item_two" } ,
+    //             {$inc : {"items.$.price" : 1} } ,
+    //             false ,
     //             true);
   }
 

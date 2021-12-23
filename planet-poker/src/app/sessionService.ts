@@ -4,6 +4,9 @@ import {Router} from '@angular/router';
 import {SessionUserData} from './model/sessionUserData';
 import {map} from 'rxjs/operators';
 import {Subject, Observable} from 'rxjs';
+import {User} from "./model/user";
+import * as mongoose from "mongoose";
+import {Session} from "./model/session";
 
 
 @Injectable({providedIn: 'root'})
@@ -78,41 +81,28 @@ export class SessionService {
 
 //   }
 
-  insertPost(username: string, selectedScore: string) {
-    console.log("Flow: 2. posts service insertPost")
-    console.log(username, selectedScore)
-    // const postData = new FormData();
-    // postData.append("title", title);
-    // postData.append("description", description)
-    //
-    // new Response(postData).text().then(console.log);
 
-    const params = new HttpParams()
-      .set('username', username)
-      .set('selectedScore', selectedScore);
+  //TODO: selectedScore is always null here.
+  /**
+   * Create a new session and add the user that created the session.
+   * @param username the name of the user
+   * @param selectedScore the selectedScore
+   */
+  insertUser(username: string, selectedScore: string) {
+    console.log("Flow: 2. posts service insertUser")
+    let newUser = new User(username, selectedScore);
 
-    console.log("Params after setting them: ", params.toString());
-    // const body = JSON.stringify(params);
+    console.log("adding user to db: ", newUser)
 
-    // console.log(title, description)
-    // //new Response(postData).text().then(console.log);
-    // console.log("params: " + params.toString());
-
-    this.http
-      .post<{ message: string, session: SessionUserData }>(
-        this.insertSessionDataUrl
-        , params)
+     this.http.post(this.insertSessionDataUrl, newUser)
       .subscribe(response => {
         console.log("the response: ", response);
 
-          this.router.navigate(["/"]);
-
+        //TODO: navigate to board with session id X
+        this.router.navigate(["/"]);
       });
 
-
     console.log("after http request Insert")
-
-
   }
 
 //   getPostsUpdateListener() {

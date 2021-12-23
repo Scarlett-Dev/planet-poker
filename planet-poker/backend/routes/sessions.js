@@ -29,10 +29,11 @@ router.post('/createSession', async (req, res, next) => {
   // console.log(res);
   console.log("res" + res.body);
   const session = new Session({
+    users:[{
+      username: req.body.username,
+      selectedScore: req.body.selectedScore
 
-          username: req.body.username,
-          selectedScore: req.body.selectedScore
-
+    }]
   })
   try{
     const savedSession = await session.save();
