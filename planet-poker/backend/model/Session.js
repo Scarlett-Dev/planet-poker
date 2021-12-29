@@ -15,7 +15,7 @@ const mongoose = require('mongoose');
 
 const SessionSchema = mongoose.Schema({
   users: [{
-    username: {type: String, required: false},
+    username: {type: String, required: true},
     selectedScore: {type: String, required: false}
   }]
 })

@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
-import { MatSelect } from '@angular/material/select';
-import { SessionService } from '../sessionService';
+import {Component} from '@angular/core';
+import {FormControl, Validators} from '@angular/forms';
+import {MatSelect} from '@angular/material/select';
+import {SessionService} from '../sessionService';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +16,7 @@ export class LoginComponent {
   sessionId = new FormControl('', [Validators.required]);
   gamemodeSelection = new FormControl('', [Validators.required]);
 
- constructor (public sessionsService:SessionService) {
+  constructor(public sessionsService: SessionService) {
   }
 
 
@@ -31,20 +31,28 @@ export class LoginComponent {
       //TODO: Reroute user to the board within the new session
       console.log(
         'The user ' +
-          this.user.value +
-          ' is joining the session ' +
-          this.sessionId.value
+        this.user.value +
+        ' is joining the session ' +
+        this.sessionId.value
       );
+      // this.sessionsService.addNewUserToExistingSession(this.generateUniqueUserId(this.user.value),"0", this.sessionId.value)
+
+      //TODO: Move this to board component. -> tested and works! :)
+      // this.sessionsService.updateUserScoreInSession(this.user.value, this.selectedScore.value, this.sessionId.value);
+
+      //TODO: Test reset -> not working? fix it :)
+      this.sessionsService.resetAllUserScores(this.sessionId.value);
+
     } else {
       //TODO: Show error
     }
   }
 
 
- //TODO: POST to DB with sessionId and generateUniqueUserId()  -> score empty
+  //TODO: POST to DB with sessionId and generateUniqueUserId()  -> score empty
   onClickCreateSession() {
     if (this.user.valid && this.gamemodeSelection.valid) {
-      this.sessionsService.insertUser(this.generateUniqueUserId(this.user.value), "0");
+      this.sessionsService.createNewSessionWithUser(this.generateUniqueUserId(this.user.value), "0");
       // console.log(
       //   'The user ' +
       //     this.user.value +
@@ -58,12 +66,13 @@ export class LoginComponent {
     }
   }
 
-/**
- *  Generate userId and append to name with a #
- * @param name the username to use for generating a unique username
- * @returns unique userId
- */
-  generateUniqueUserId(name:String) {
+  /**
+   *  Generate userId and append to name with a #
+   *
+   * @param name the username to use for generating a unique username
+   * @returns unique userId
+   */
+  generateUniqueUserId(name: String) {
     let randomUserId = Math.floor(Math.random() * (99999 - 1) + 1);
     return name + "#" + randomUserId
   }
