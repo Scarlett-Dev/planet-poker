@@ -1,12 +1,13 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpClientModule, HttpParams, HttpResponse} from '@angular/common/http';
-import {Router} from '@angular/router';
+import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
 import {SessionUserData} from './model/sessionUserData';
 import {map} from 'rxjs/operators';
 import {Subject, Observable} from 'rxjs';
 import {User} from "./model/user";
 import * as mongoose from "mongoose";
 import {Session} from "./model/session";
+// import {Session} from "./model/session";
 
 
 @Injectable({providedIn: 'root'})
@@ -24,14 +25,15 @@ export class SessionService {
   insertSessionDataUrl = 'http://localhost:3000/api/sessions/createSession';
   joinSessionDataUrl = 'http://localhost:3000/api/sessions/';
   updateUserScoreDataUrl = 'http://localhost:3000/api/sessions/update/';
-  resetSessionDataUrl='http://localhost:3000/api/sessions/reset/';
-  fetchSessionDataUrl='http://localhost:3000/api/sessions/fetch/';
+  resetSessionDataUrl = 'http://localhost:3000/api/sessions/reset/';
+  fetchSessionDataUrl = 'http://localhost:3000/api/sessions/fetch/';
   // postsUrl = 'http://localhost:8080/api/posts/';
   // deleteById = 'http://localhost:8080/api/posts/';
 
 
   constructor(private http: HttpClient,
-              private router: Router) {
+              private router: Router,
+              private route: ActivatedRoute) {
   }
 
 
@@ -101,7 +103,7 @@ export class SessionService {
       console.log("the response: ", response);
 
       //TODO: navigate to board with session id X
-      this.router.navigate(["/"]);
+      this.router.navigate(["/board"]);
     });
 
   }
@@ -114,22 +116,16 @@ export class SessionService {
    * @param sessionId the unique ID of the session that the user is currently in
    */
   updateUserScoreInSession(username: string, selectedScore: string, sessionId: string) {
-
-    console.log("Call to DB for fetching the objectId of the user");
-
-
     console.log("Call to DB for updating the score to ", selectedScore, " for the user (", username, ")");
     let currentUser = new User(username, selectedScore);
     this.http.patch(this.updateUserScoreDataUrl + sessionId, currentUser).subscribe(response => {
       // console.log("the response: ", response);
 
       //TODO: navigate to board with session id X
-      this.router.navigate(["/"]);
+      this.router.navigate(["/board"]);
     });
 
   }
-
-  //TODO: resetAllUserScores -> all score to 0/null
 
   /**
    * Reset all the selectedScore to 0 within the given session
@@ -137,11 +133,11 @@ export class SessionService {
    */
   resetAllUserScores(sessionId: string) {
     console.log("Resetting all the scores in the session", sessionId)
-    this.http.patch(this.resetSessionDataUrl + sessionId,sessionId).subscribe(response => {
+    this.http.patch(this.resetSessionDataUrl + sessionId, sessionId).subscribe(response => {
       // console.log("the response: ", response);
 
       //TODO: navigate to board with session id X
-      this.router.navigate(["/"]);
+      this.router.navigate(["/board"]);
     });
   }
 
@@ -157,21 +153,21 @@ export class SessionService {
   //TODO: selectedScore is always null here.
   /**
    * Create a new session and add the user that created the session.
+   * @param gameMode the game mode of the session
    * @param username the name of the user
    * @param selectedScore the selectedScore
    */
-  createNewSessionWithUser(username: string, selectedScore: string) {
-    console.log("Call to DB for creating a new record (room) by the user ", username)
-    let newUser = new User(username, selectedScore);
+  createNewSessionWithUser(gameMode: string, username: string, selectedScore: string) {
+    console.log("Creating session with mode: ", gameMode, " and username: ",username);
+    let newSession = new Session(new Array(new User(username, selectedScore)), gameMode);
 
-    this.http.post(this.insertSessionDataUrl, newUser)
+    this.http.post(this.insertSessionDataUrl, newSession)
       .subscribe(response => {
         // console.log("the response: ", response);
-
-        //TODO: navigate to board with session id X
-        this.router.navigate(["/"]);
       });
-    // console.log("after http request Insert")
+    //TODO: navigate to board with session id X
+    // const navParams: NavigationExtras = {state: {username:}}
+    this.router.navigate(["/board", newSession]);
   }
 
 //   getPostsUpdateListener() {

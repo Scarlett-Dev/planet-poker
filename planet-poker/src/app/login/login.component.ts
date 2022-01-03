@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
 import {MatSelect} from '@angular/material/select';
 import {SessionService} from '../sessionService';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -10,18 +11,19 @@ import {SessionService} from '../sessionService';
 
 export class LoginComponent {
   isNewSession: boolean = false;
-  Gamemode = Gamemode;
+  // Gamemode = Gamemode;
 
   user = new FormControl('', [Validators.required]);
   sessionId = new FormControl('', [Validators.required]);
   gamemodeSelection = new FormControl('', [Validators.required]);
 
-  constructor(public sessionsService: SessionService) {
+  constructor(public sessionsService: SessionService, private router: Router) {
   }
 
 
   onToggleCheckBox() {
     this.isNewSession = !this.isNewSession;
+
   }
 
   //TODO: UPDATE to db with user. generateUniqueUserId()
@@ -35,13 +37,13 @@ export class LoginComponent {
         ' is joining the session ' +
         this.sessionId.value
       );
-      // this.sessionsService.addNewUserToExistingSession(this.generateUniqueUserId(this.user.value),"0", this.sessionId.value)
+      this.sessionsService.addNewUserToExistingSession(this.generateUniqueUserId(this.user.value), "0", this.sessionId.value)
 
       //TODO: Move this to board component. -> tested and works! :)
       // this.sessionsService.updateUserScoreInSession(this.user.value, this.selectedScore.value, this.sessionId.value);
 
-      //TODO: Test reset -> not working? fix it :)
-      this.sessionsService.resetAllUserScores(this.sessionId.value);
+      //TODO: Move this to board component. -> tested and works! :)
+      // this.sessionsService.resetAllUserScores(this.sessionId.value);
 
     } else {
       //TODO: Show error
@@ -51,8 +53,9 @@ export class LoginComponent {
 
   //TODO: POST to DB with sessionId and generateUniqueUserId()  -> score empty
   onClickCreateSession() {
-    if (this.user.valid && this.gamemodeSelection.valid) {
-      this.sessionsService.createNewSessionWithUser(this.generateUniqueUserId(this.user.value), "0");
+    // if (this.user.valid && this.gamemodeSelection.valid) {
+    console.log("Game mode is: ", this.gamemodeSelection.value)
+      this.sessionsService.createNewSessionWithUser(this.gamemodeSelection.value, this.generateUniqueUserId(this.user.value), "0");
       // console.log(
       //   'The user ' +
       //     this.user.value +
@@ -61,9 +64,10 @@ export class LoginComponent {
       //     ' with game mode ' +
       //     this.gamemodeSelection.value
       // );
-    } else {
-      //TODO: Show error
-    }
+
+    // } else {
+    //   //TODO: Show error
+    // }
   }
 
   /**
@@ -80,7 +84,7 @@ export class LoginComponent {
 }
 
 
-export enum Gamemode {
-  TShirt = 'T-Shirt',
-  Standard = 'Standard',
-}
+// export enum Gamemode {
+//   TShirt = 'T-Shirt',
+//   Standard = 'Standard',
+// }

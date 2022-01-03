@@ -28,12 +28,13 @@ router.get("/", (req, res) => {
 router.post('/createSession', async (req, res, next) => {
   console.log("POSTED A NEW Session");
   console.log("request", req);
-  // console.log(res);
-  console.log("res" + res.body);
+
   const session = new Session({
+    gamemode: req.body.gamemode,
     users: [{
-      username: req.body.username,
-      selectedScore: req.body.selectedScore
+      //TODO: find a better way to access the elements in the array
+      username: req.body.users[0].username,
+      selectedScore: req.body.users[0].selectedScore
     }]
   })
   try {
@@ -96,39 +97,33 @@ router.patch('/update/:sessionId', async (req, res) => {
   }
 })
 
-
+/*
+* Sets all the scores of each user to 0
+*/
 router.patch('/reset/:sessionId', async (req, res) => {
   try {
     const resetSession = await Session.updateMany(
-      // {_id: req.params.sessionId},
-      // {
-      //   $set: {"users.$.selectedScore": "0"}
-
-//TODO: try this !!
+      {_id: req.params.sessionId},
       {
-        _id: req.params.sessionId,
-        users: {$elemMatch: {selectedScore: { "$ne": "0" } }}},
-    {$set: {
-      "users.$[].selectedScore": "0"
-    }});
+        $set: {"users.$[].selectedScore": "0"}
+      });
 
     res.json(resetSession);
     console.log("Reset all the scores to zero, in the session ", req.params.sessionId);
   } catch (e) {
     res.json({message: e});
-
   }
 })
 
 
 // Get Specific Post
-router.get('fetch/:sessionId',async (req,res) => {
-  try{
+router.get('fetch/:sessionId', async (req, res) => {
+  try {
     const sessionUsers = await Session.findById(req.params.sessionId);
     res.json(sessionUsers);
     console.log(req.params.sessionId);
     console.log(sessionUsers)
-  }catch (e) {
+  } catch (e) {
     res.json({message: e});
 
   }

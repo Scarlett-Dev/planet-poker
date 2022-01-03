@@ -36,9 +36,9 @@
   <mat-form-field appearance="fill">
     <mat-label>Select A Game Mode</mat-label>
     <!-- TODO: check for proper binding to the ts -->
-    <mat-select value="Gamemode.Standard" [formControl]="gamemodeSelection">
-      <mat-option value="Gamemode.Standard">{{ Gamemode.Standard }}</mat-option>
-      <mat-option value="Gamemode.TShirt">{{ Gamemode.TShirt }}</mat-option>
+    <mat-select value="standard" [formControl]="gamemodeSelection">
+      <mat-option value="standard">Standard</mat-option>
+      <mat-option value="tShirt">T-Shirt</mat-option>
     </mat-select>
   </mat-form-field>
   <br />

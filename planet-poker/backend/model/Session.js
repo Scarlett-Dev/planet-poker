@@ -14,6 +14,10 @@ const mongoose = require('mongoose');
 // })
 
 const SessionSchema = mongoose.Schema({
+  gamemode: {
+    type: String,
+    required: true
+  },
   users: [{
     username: {type: String, required: true},
     selectedScore: {type: String, required: false}

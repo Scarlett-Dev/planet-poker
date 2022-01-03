@@ -1,26 +1,25 @@
 import {User} from "./user";
-import { Gamemode } from "../login/login.component";
-// @Deprecated 
+// @Deprecated
 export class Session {
 
   //todo: fix getter and setter methods
   //todo: make name and selectedScore private
 
   constructor(
-    private sessionID: number,
-    private joinedUsers: User[],
-    private gamemode: Gamemode
+    // private sessionID: number,
+    public users: User[],
+    public gamemode: string
   ) {
 
   }
 
   //Getters
-  public get getSessionID() {
-    return this.sessionID;
-  }
+  // public get getSessionID() {
+  //   return this.sessionID;
+  // }
 
   public get getJoinedUsers() {
-    return this.joinedUsers;
+    return this.users;
   }
 
   public get getGamemode(){
@@ -57,6 +56,6 @@ export class Session {
 // A representation of session data that can be converted to
 // and from JSON without being altered.
 interface SessionJSON {
-  sessionID: number;
-  joinedUsers: User[];
+  gamemode: string
+  users: User[];
 }

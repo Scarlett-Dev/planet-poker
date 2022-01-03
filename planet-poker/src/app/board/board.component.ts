@@ -4,6 +4,7 @@ import { UserService } from '../user.service';
 import { User } from '../model/user';
 import { io } from 'socket.io-client';
 import { MatTableDataSource } from '@angular/material/table';
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-board',
@@ -14,6 +15,7 @@ export class BoardComponent implements OnInit {
   private socket: any;
   gameMode = '';
   userArray: string[] = [];
+
 
 
   scoresByUserArray: string[] = [];
@@ -28,30 +30,40 @@ export class BoardComponent implements OnInit {
   tshirtArray = ['S', 'M', 'L', 'XL', 'XXL'];
   arraystandard = ['1', '2', '3', '5', '8', '13', '20', '40', '100'];
 
-  constructor(public userService: UserService) {
-    this.socket = io('http://localhost:3000');
+  constructor(public userService: UserService,
+  private route: ActivatedRoute) {
+    // this.socket = io('http://localhost:3000');
   }
 
   ngOnInit() {
+    //TODO:
+    let test = new Array(this.route.snapshot.paramMap.get('users'))
+    if (test != null) {
+      console.log((test)[0])
 
-    console.log(
-      'Initial values of the receivedUserArray',
-      this.userService.receivedUserArray
-    );
+    }
 
-    // @Deprecated -> remove this
-    this.userService.onCreatedUser().subscribe((message: any) => {
-      this.scoresByUserArray.push(message);
+    //TODO: Fetch the generated session ID of the user.
 
-      console.log(
-        'Stolen data from service',
-        this.userService.receivedUserArray
-      );
-      console.log(
-        'updating array with code from internet.',
-        this.scoresByUserArray
-      );
-    });
+    //
+    // console.log(
+    //   'Initial values of the receivedUserArray',
+    //   this.userService.receivedUserArray
+    // );
+    //
+    // // @Deprecated -> remove this
+    // this.userService.onCreatedUser().subscribe((message: any) => {
+    //   this.scoresByUserArray.push(message);
+    //
+    //   console.log(
+    //     'Stolen data from service',
+    //     this.userService.receivedUserArray
+    //   );
+    //   console.log(
+    //     'updating array with code from internet.',
+    //     this.scoresByUserArray
+    //   );
+    // });
 
   }
 
@@ -65,7 +77,7 @@ export class BoardComponent implements OnInit {
 
   //TODO: Refactor -> Gamemode should be received from login page
   getGameMode() {
-    if (this.gameMode === 'tshirt') {
+    if (this.gameMode === 'tShirt') {
       return this.tshirtArray;
     } else {
       return this.arraystandard;
