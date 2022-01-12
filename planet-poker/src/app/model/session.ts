@@ -8,7 +8,8 @@ export class Session {
   constructor(
     // private sessionID: number,
     public users: User[],
-    public gamemode: string
+    public gamemode: string,
+    public _id: string
   ) {
 
   }
@@ -24,6 +25,10 @@ export class Session {
 
   public get getGamemode(){
       return this.gamemode;
+  }
+
+  public get getSessionId(){
+    return this._id;
   }
 
   // toJSON is automatically used by JSON.stringify
@@ -55,7 +60,8 @@ export class Session {
 
 // A representation of session data that can be converted to
 // and from JSON without being altered.
-interface SessionJSON {
+export interface SessionJSON {
+  _id: string
   gamemode: string
   users: User[];
 }

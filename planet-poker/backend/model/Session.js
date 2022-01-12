@@ -22,6 +22,10 @@ const SessionSchema = mongoose.Schema({
     username: {type: String, required: true},
     selectedScore: {type: String, required: false}
   }]
+},
+  {
+  collection: 'SessionSchema',
+  versionKey: false
 })
 
 module.exports = mongoose.model('Sessions', SessionSchema);

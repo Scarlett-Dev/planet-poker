@@ -1,10 +1,13 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { UserService } from '../user.service';
-import { User } from '../model/user';
-import { io } from 'socket.io-client';
-import { MatTableDataSource } from '@angular/material/table';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {UserService} from '../user.service';
+import {User} from '../model/user';
+import {io} from 'socket.io-client';
+import {MatTableDataSource} from '@angular/material/table';
 import {ActivatedRoute} from "@angular/router";
+import {element} from "protractor";
+import {Session} from "../model/session";
+import {SessionService} from "../sessionService";
 
 @Component({
   selector: 'app-board',
@@ -12,70 +15,40 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./board.component.css'],
 })
 export class BoardComponent implements OnInit {
-  private socket: any;
   gameMode = '';
-  userArray: string[] = [];
+  sessionId = '';
+  currentUser = '';
+  currentDbUser = '';
 
-
+  userArray: User[] = [];
 
   scoresByUserArray: string[] = [];
   //TODO: Should be populated with get statement from DB. Also needs to be refreshed.
   // by defeault users should be visible but scores shouldn't. (Hide with a random emoji?)
   scoresByUserTable = new MatTableDataSource<User>();
-
-  singleUserArray: User[] = [];
-
   columnsToDisplay: string[] = ['name', 'score'];
 
   tshirtArray = ['S', 'M', 'L', 'XL', 'XXL'];
   arraystandard = ['1', '2', '3', '5', '8', '13', '20', '40', '100'];
 
-  constructor(public userService: UserService,
-  private route: ActivatedRoute) {
-    // this.socket = io('http://localhost:3000');
+  constructor(public sessionService: SessionService,
+              private route: ActivatedRoute) {
+
   }
 
   ngOnInit() {
-    //TODO:
-    let test = new Array(this.route.snapshot.paramMap.get('users'))
-    if (test != null) {
-      console.log((test)[0])
+    let createdSession: Session;
+    this.route.queryParams.subscribe(params => {
+      createdSession = Session.fromJSON(params.prop)
+      console.log("New created session in board: ", createdSession)
+      this.setGamemode(createdSession.getGamemode);
+      this.setRoomId(createdSession.getSessionId);
 
-    }
-
-    //TODO: Fetch the generated session ID of the user.
-
-    //
-    // console.log(
-    //   'Initial values of the receivedUserArray',
-    //   this.userService.receivedUserArray
-    // );
-    //
-    // // @Deprecated -> remove this
-    // this.userService.onCreatedUser().subscribe((message: any) => {
-    //   this.scoresByUserArray.push(message);
-    //
-    //   console.log(
-    //     'Stolen data from service',
-    //     this.userService.receivedUserArray
-    //   );
-    //   console.log(
-    //     'updating array with code from internet.',
-    //     this.scoresByUserArray
-    //   );
-    // });
-
+      //Sexy Solution ;)
+      this.setCurrentUser(params.currentUser)
+    })
   }
 
-
-  usernameInput: any;
-
-  //TODO: Remove from board -> add to login page
-  onToggle(value: string) {
-    this.gameMode = value;
-  }
-
-  //TODO: Refactor -> Gamemode should be received from login page
   getGameMode() {
     if (this.gameMode === 'tShirt') {
       return this.tshirtArray;
@@ -84,35 +57,45 @@ export class BoardComponent implements OnInit {
     }
   }
 
-  //TODO: @Deprecated
-  getUsername(username: any) {
-    console.log('The fetched username ' + username);
-
-    let data = JSON.stringify(new User(username, "0"));
-
-    this.userArray.push(data);
-    this.userService.createUser(data);
-    console.log('Emit event that a new user is created ' + data);
+  setGamemode(gameMode: string) {
+    this.gameMode = gameMode;
   }
 
-  //TODO: implement: UPDATE DB for specific user to update score (see https://stackoverflow.com/questions/10522347/how-do-you-update-objects-in-a-documents-array-nested-updating )
+  setRoomId(sessionId: string) {
+    this.sessionId = sessionId;
+  }
+
+  setCurrentUser(username: string) {
+    console.log("Setting username in board.")
+    this.currentDbUser = username;
+    this.currentUser = this.currentDbUser.split('#')[0];
+  }
+
   buttonClicked(card: string) {
     console.log('Card ' + card + ' clicked!');
-    // db.bar.update( {user_id : 123456 , "items.item_name" : "my_item_two" } ,
-    //             {$inc : {"items.$.price" : 1} } ,
-    //             false ,
-    //             true);
+    console.log("Updating score for user in db")
+    this.sessionService.updateUserScoreInSession(this.currentDbUser, card, this.sessionId);
   }
 
-  //TODO: connect to a button on page
-  resetScores(){
-    //TODO: UPDATE to db for all users in session set score to empty
+  resetScores() {
+    console.log("Received request to reset all the user scores in the session.")
+    this.sessionService.resetAllUserScores(this.sessionId);
   }
 
   //TODO: connect to toggle btn.
-  showScores(){
-    //TODO: Show scores
+  showScores() {
+    //TODO: Show score
+    //
+    // let users: User[]
+    //
+    // users = this.sessionService.showScoresAndUsers(this.sessionId);
+    // console.log("received users from get", userArray)
+
   }
 
+
+  ngOnDestroy() {
+    this.route.queryParams.subscribe().unsubscribe();
+  }
 
 }

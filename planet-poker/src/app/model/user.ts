@@ -1,4 +1,3 @@
-// @Deprecated
 export class User {
 
   //todo: fix getter and setter methods

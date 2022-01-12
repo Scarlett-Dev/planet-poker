@@ -18,10 +18,6 @@ router.get("/", (req, res) => {
 //   });
 })
 
-// router.get("/id", (req, res) => {
-//   res.send("id route"); // respond to the user sending a string :)
-// })
-
 /**
  * Create a Session with the user that created it in the database
  */

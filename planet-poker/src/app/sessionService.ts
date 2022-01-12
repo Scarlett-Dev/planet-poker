@@ -26,7 +26,7 @@ export class SessionService {
   joinSessionDataUrl = 'http://localhost:3000/api/sessions/';
   updateUserScoreDataUrl = 'http://localhost:3000/api/sessions/update/';
   resetSessionDataUrl = 'http://localhost:3000/api/sessions/reset/';
-  fetchSessionDataUrl = 'http://localhost:3000/api/sessions/fetch/';
+  fetchSessionDataUrl = 'http://localhost:3000/api/sessions/getSession/';
   // postsUrl = 'http://localhost:8080/api/posts/';
   // deleteById = 'http://localhost:8080/api/posts/';
 
@@ -121,8 +121,6 @@ export class SessionService {
     this.http.patch(this.updateUserScoreDataUrl + sessionId, currentUser).subscribe(response => {
       // console.log("the response: ", response);
 
-      //TODO: navigate to board with session id X
-      this.router.navigate(["/board"]);
     });
 
   }
@@ -135,10 +133,22 @@ export class SessionService {
     console.log("Resetting all the scores in the session", sessionId)
     this.http.patch(this.resetSessionDataUrl + sessionId, sessionId).subscribe(response => {
       // console.log("the response: ", response);
-
-      //TODO: navigate to board with session id X
-      this.router.navigate(["/board"]);
     });
+  }
+  //  showScoresAndUsers(sessionId: string):User[]{
+  showScoresAndUsers(sessionId: string){
+    let currentSession:Session;
+    console.log("Fetching all the users and scores in the session service")
+     this.http
+      .get(this.fetchSessionDataUrl + sessionId).subscribe( response => {
+        console.log("response get: ", response);
+        let test = JSON.stringify(response)
+        currentSession = Session.fromJSON(test);
+
+       console.log("response get: ", currentSession.users);
+      });
+    // currentSession = Session.fromJSON(JSON.stringify(response));
+    // return currentSession.users;
   }
 
   //TODO implement:
@@ -158,16 +168,38 @@ export class SessionService {
    * @param selectedScore the selectedScore
    */
   createNewSessionWithUser(gameMode: string, username: string, selectedScore: string) {
-    console.log("Creating session with mode: ", gameMode, " and username: ",username);
-    let newSession = new Session(new Array(new User(username, selectedScore)), gameMode);
+    let createdSession: Session;
+
+    console.log("Creating session with mode: ", gameMode, " and username: ", username);
+    // let newSession = new Session(new Array(new User(username, selectedScore)), gameMode, "");
+    let newSession = new Session([new User(username, selectedScore)], gameMode, "");
 
     this.http.post(this.insertSessionDataUrl, newSession)
       .subscribe(response => {
-        // console.log("the response: ", response);
-      });
+        console.log("the response: ", response);
+        console.log("sexy string: ", JSON.stringify(response))
+        let resp = Session.fromJSON(JSON.stringify(response))
+        console.log("Session object from response: ", resp.getSessionId)
+
+
+        createdSession = Session.fromJSON(JSON.stringify(response));
+
+        //  sexy string:  {"gamemode":"standard","users":[{"username":"Charmander#46343","selectedScore":"0","_id":"61df2234eed73431d5a18e8a"}],"_id":"61df2234eed73431d5a18e89","__v":0}
+        console.log("createdSession used for navigate: ", createdSession.toJSON())
+        this.router.navigate(["/board", createdSession],
+          {
+            queryParams: {
+              prop: JSON.stringify(createdSession),
+              currentUser: username
+            }
+          });
+      })
+
     //TODO: navigate to board with session id X
     // const navParams: NavigationExtras = {state: {username:}}
-    this.router.navigate(["/board", newSession]);
+
+    //Fetch for ses
+
   }
 
 //   getPostsUpdateListener() {
