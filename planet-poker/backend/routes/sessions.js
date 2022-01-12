@@ -7,15 +7,18 @@ const Session = require('../model/Session')
 require('dotenv/config');
 
 // now goes to backend/routes because we use router.get that references to
-router.get("/", (req, res) => {
-  console.log("In GET all Sessions");
-//   Post.find().then(documents => {
-//     res.status(200).json({
-//       message: "Sessions fetched successfully!",
-//       posts: documents
-//     });
-//     console.log(documents);
-//   });
+router.get("/getSession/:sessionId", async (req, res) => {
+  console.log("In GET specific session" + req.params.sessionId);
+
+  try {
+    console.log("in try")
+    const session = (await Session.findById(req.params.sessionId));
+
+    res.status(200).send(session);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+
 })
 
 /**
@@ -37,6 +40,7 @@ router.post('/createSession', async (req, res, next) => {
     // session._id = req.body.username;
     const savedSession = await session.save();
     res.json(savedSession);
+    console.log("SESSION_ID: " + savedSession._id);
   } catch (e) {
     res.json({message: e});
   }
