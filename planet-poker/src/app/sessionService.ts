@@ -13,6 +13,7 @@ import {Session} from "./model/session";
 
 @Injectable({providedIn: 'root'})
 export class SessionService {
+
 //   private posts: Post[] = [];
   private sessionsUpdated = new Subject<User[]>();
 //   private matTableUpdated = new Subject<Post[]>();
@@ -142,11 +143,12 @@ export class SessionService {
   showScoresAndUsers(sessionId: string) {
     let currentSession: Session;
     console.log("Fetching all the users and scores in the session service")
-     this.http
-      .get(this.fetchSessionDataUrl + sessionId).subscribe( response => {
-        console.log("response get: ", response);
-        let test = JSON.stringify(response)
-        currentSession = Session.fromJSON(test);
+
+    this.http
+      .get(this.fetchSessionDataUrl + sessionId).subscribe(response => {
+      console.log("response get: ", response);
+      let test = JSON.stringify(response)
+      currentSession = Session.fromJSON(test);
 
       console.log("response get: ", currentSession.users);
       this.retrievedUsers = currentSession.users;
@@ -205,6 +207,8 @@ export class SessionService {
 
         //  sexy string:  {"gamemode":"standard","users":[{"username":"Charmander#46343","selectedScore":"0","_id":"61df2234eed73431d5a18e8a"}],"_id":"61df2234eed73431d5a18e89","__v":0}
         console.log("createdSession used for navigate: ", createdSession.toJSON())
+
+        // here we navigate to different component and pass
         this.router.navigate(["/board", createdSession],
           {
             queryParams: {
@@ -221,8 +225,8 @@ export class SessionService {
 
   }
 
-//   getPostsUpdateListener() {
-//     console.log("updatelistener");
-//     return this.postsUpdated.asObservable();
-//   }
+  getSessionUpdateListener() {
+    console.log("updatelistener");
+    return this.sessionsUpdated.asObservable();
+  }
 }

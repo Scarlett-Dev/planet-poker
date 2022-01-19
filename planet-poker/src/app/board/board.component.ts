@@ -1,23 +1,26 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {User} from '../model/user';
 import {MatTableDataSource} from '@angular/material/table';
 import {ActivatedRoute} from "@angular/router";
 import {Session} from "../model/session";
 import {SessionService} from "../sessionService";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-board',
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.css'],
 })
-export class BoardComponent implements OnInit {
+export class BoardComponent implements OnInit, OnDestroy {
   gameMode = '';
   sessionId = '';
   currentUser = '';
   currentDbUser = '';
 
   userArray: User[] = [];
+
+  sessionArray: Session [] = []
 
   scoresByUserArray: string[] = [];
   //TODO: Should be populated with get statement from DB. Also needs to be refreshed.
@@ -36,6 +39,8 @@ export class BoardComponent implements OnInit {
   }
 
   ngOnInit() {
+
+
     let createdSession: Session;
 
     this.route.queryParams.subscribe(params => {
@@ -47,6 +52,20 @@ export class BoardComponent implements OnInit {
       //Sexy Solution ;)
       this.setCurrentUser(params.currentUser)
     })
+
+    // run once to get all the users for the session
+    this.sessionService.showScoresAndUsers(this.sessionId);
+    this.sessionSub = this.sessionService.getSessionUpdateListener().subscribe((users:User[]) =>
+    {
+      this.retrievedUsers = users;
+      console.log("Retrieved users in board comp subscribe:", this.retrievedUsers)
+      this.scoresByUserTable.data = users;
+
+    });
+
+
+    this.sessionSub = this.sessionService.getSessionUpdateListener().subscribe();
+    console.log("Sessionsub: ",this.sessionSub)
   }
 
   getGameMode() {
@@ -94,6 +113,10 @@ export class BoardComponent implements OnInit {
     this.sessionService.showScoresAndUsers(this.sessionId);
     // console.log("received users from get", this.userArray)
 
+  }
+
+  ngOnDestroy() {
+    this.sessionSub.unsubscribe()
   }
 
 }
