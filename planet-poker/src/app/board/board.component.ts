@@ -93,9 +93,4 @@ export class BoardComponent implements OnInit {
 
   }
 
-
-  ngOnDestroy() {
-    this.route.queryParams.subscribe().unsubscribe();
-  }
-
 }
