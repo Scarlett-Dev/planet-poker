@@ -7,13 +7,14 @@ import {Subject, Observable} from 'rxjs';
 import {User} from "./model/user";
 import * as mongoose from "mongoose";
 import {Session} from "./model/session";
+
 // import {Session} from "./model/session";
 
 
 @Injectable({providedIn: 'root'})
 export class SessionService {
 //   private posts: Post[] = [];
-//   private postsUpdated = new Subject<Post[]>();
+  private sessionsUpdated = new Subject<User[]>();
 //   private matTableUpdated = new Subject<Post[]>();
 // {posts: Post[]; }
 // Production
@@ -30,6 +31,7 @@ export class SessionService {
   // postsUrl = 'http://localhost:8080/api/posts/';
   // deleteById = 'http://localhost:8080/api/posts/';
 
+  public retrievedUsers: User[] = [];
 
   constructor(private http: HttpClient,
               private router: Router,
@@ -135,9 +137,10 @@ export class SessionService {
       // console.log("the response: ", response);
     });
   }
-  //  showScoresAndUsers(sessionId: string):User[]{
-  showScoresAndUsers(sessionId: string){
-    let currentSession:Session;
+
+  // showScoresAndUsers(sessionId: string):User[]{
+  showScoresAndUsers(sessionId: string) {
+    let currentSession: Session;
     console.log("Fetching all the users and scores in the session service")
      this.http
       .get(this.fetchSessionDataUrl + sessionId).subscribe( response => {
@@ -145,20 +148,36 @@ export class SessionService {
         let test = JSON.stringify(response)
         currentSession = Session.fromJSON(test);
 
-       console.log("response get: ", currentSession.users);
-      });
-    // currentSession = Session.fromJSON(JSON.stringify(response));
-    // return currentSession.users;
+      console.log("response get: ", currentSession.users);
+      this.retrievedUsers = currentSession.users;
+      this.sessionsUpdated.next([...this.retrievedUsers])
+
+
+      //  this.router.navigate(["/board", currentSession],
+      //    {
+      //      queryParams: {
+      //        prop: JSON.stringify(currentSession),
+      //        currentUser: currentUser
+      //      }
+      //    });
+      // })
+      // currentSession = Session.fromJSON(JSON.stringify(response));
+      // return currentSession
+    })
+    this.sessionsUpdated.forEach( value => {
+      console.log("value in loop ", value)
+    })
+    console.log("outside function: " + this.sessionsUpdated);
   }
 
   //TODO implement:
-  // fetchSessionData(sessionId: string) {
-  //   console.log("Fetching all session data for session", sessionId)
-  //   this.http.get(this.fetchSessionDataUrl + sessionId).subscribe(response => {
-  //     // console.log("the response: ", response);
-  //     this.router.navigate(["/"]);
-  //   });
-  // }
+  fetchSessionData(sessionId: string) {
+    console.log("Fetching all session data for session", sessionId)
+    this.http.get(this.fetchSessionDataUrl + sessionId).subscribe(response => {
+      // console.log("the response: ", response);
+      this.router.navigate(["/"]);
+    });
+  }
 
   //TODO: selectedScore is always null here.
   /**

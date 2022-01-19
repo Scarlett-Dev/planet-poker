@@ -1,11 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {UserService} from '../user.service';
 import {User} from '../model/user';
-import {io} from 'socket.io-client';
 import {MatTableDataSource} from '@angular/material/table';
 import {ActivatedRoute} from "@angular/router";
-import {element} from "protractor";
 import {Session} from "../model/session";
 import {SessionService} from "../sessionService";
 
@@ -30,6 +27,8 @@ export class BoardComponent implements OnInit {
 
   tshirtArray = ['S', 'M', 'L', 'XL', 'XXL'];
   arraystandard = ['1', '2', '3', '5', '8', '13', '20', '40', '100'];
+  private sessionSub!: Subscription;
+  retrievedUsers: User[] = [];
 
   constructor(public sessionService: SessionService,
               private route: ActivatedRoute) {
@@ -38,6 +37,7 @@ export class BoardComponent implements OnInit {
 
   ngOnInit() {
     let createdSession: Session;
+
     this.route.queryParams.subscribe(params => {
       createdSession = Session.fromJSON(params.prop)
       console.log("New created session in board: ", createdSession)
@@ -85,11 +85,14 @@ export class BoardComponent implements OnInit {
   //TODO: connect to toggle btn.
   showScores() {
     //TODO: Show score
-    //
+    console.log("The quick and dirty retrieved users :", this.sessionService.retrievedUsers)
+
+
     // let users: User[]
     //
-    // users = this.sessionService.showScoresAndUsers(this.sessionId);
-    // console.log("received users from get", userArray)
+    // users =
+    this.sessionService.showScoresAndUsers(this.sessionId);
+    // console.log("received users from get", this.userArray)
 
   }
 
